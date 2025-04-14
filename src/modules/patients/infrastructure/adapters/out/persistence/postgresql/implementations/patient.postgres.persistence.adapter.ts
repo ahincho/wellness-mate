@@ -138,8 +138,8 @@ export class PatientPostgresPersistenceAdapter
     historyFilters: HistoryFilters,
   ): Promise<PageResult<History>> {
     const { page, patientId } = historyFilters;
-    const patientExists = await this.historyRespository.exists({
-      where: { patient: { id: patientId } },
+    const patientExists = await this.patientRepository.exists({
+      where: { id: patientId },
     });
     if (!patientExists) {
       const exception = new PatientNotFoundException(patientId);
