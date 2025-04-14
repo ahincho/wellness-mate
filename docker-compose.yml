@@ -1,0 +1,55 @@
+services:
+  app:
+    image: wellness-mate:1.0.0
+    container_name: wellness-mate-app
+    ports:
+      - "4000:4000"
+    environment:
+      APP_NAME: wellness-mate
+      APP_ENVIRONMENT: production
+      APP_PORT: 4000
+      APP_DEFAULT_ADMIN_USERNAME: example@example.com
+      APP_DEFAULT_ADMIN_PASSWORD: example@production
+      DATABASE_VENDOR: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: wellness
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      TYPE_ORM_POOL_SIZE: 20
+      TYPE_ORM_RETRY_ATTEMPTS: 3
+      TYPE_ORM_RETRY_DELAY: 5000
+      TYPE_ORM_SYNCHRONIZE: false
+      TYPE_ORM_LOGGING: true
+      JWT_SECRET: jwt-secret
+      JWT_EXPIRES_IN: 5m
+      OPEN_AI_API_KEY: open-ai-api-key
+      AWS_REGION: aws-region
+      AWS_PROFILE: aws-profile
+      AWS_ACCESS_KEY_ID: aws-access-key-id
+      AWS_SECRET_ACCESS_KEY: aws-secret-access-key
+    depends_on:
+      - db
+    networks:
+      - wellness-mate-network
+
+  db:
+    image: postgres:17.4
+    container_name: wellness-mate-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: wellness
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - wellness-mate-network
+
+volumes:
+  postgres-data:
+
+networks:
+  wellness-mate-network:
+    driver: bridge
