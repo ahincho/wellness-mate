@@ -1,0 +1,5 @@
+export const SEND_CHAT_REQUEST_DEFAULT_SERVICE =
+  'SEND_CHAT_REQUEST_DEFAULT_SERVICE';
+export const OPEN_AI_CHAT_PORT = 'OPEN_AI_CHAT_PORT';
+export const AWS_CHAT_PORT = 'AWS_CHAT_PORT';
+export const AI_CHAT_V1_ENDPOINT = '/api/v1/chats';
