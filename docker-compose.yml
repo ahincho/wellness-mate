@@ -34,7 +34,7 @@ services:
       - wellness-mate-network
 
   db:
-    image: postgres:17.4
+    image: postgres:17.4-alpine
     container_name: wellness-mate-db
     environment:
       POSTGRES_USER: postgres
