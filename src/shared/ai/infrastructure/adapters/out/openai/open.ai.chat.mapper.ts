@@ -1,3 +1,4 @@
+import { ChatProvider } from '@shared/ai/domain/enums/chat.provider';
 import { ChatRequest } from '@shared/ai/domain/models/chat.request';
 import { ChatResponse } from '@shared/ai/domain/models/chat.response';
 import {
@@ -43,6 +44,7 @@ export class OpenAiChatMapper {
   static openAiToDomain(response: ChatCompletion): ChatResponse {
     const choice = response.choices[0];
     return {
+      provider: ChatProvider.OPEN_AI,
       content: choice.message?.content ?? '',
       model: `openai.${response.model}`,
       promptTokens: response.usage?.prompt_tokens ?? 0,

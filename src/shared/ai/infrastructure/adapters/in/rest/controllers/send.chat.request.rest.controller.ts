@@ -11,7 +11,8 @@ import {
   SEND_CHAT_REQUEST_DEFAULT_SERVICE,
 } from '@common/constants/ai.constants';
 import { SendChatRequestUseCase } from '@shared/ai/application/ports/in/send.chat.request.use.case';
-import { Public } from '@auth/decorators/public.decorator';
+import { HasAnyRole } from '@auth/decorators/has.any.role.decorator';
+import { ADMINISTRATOR_ROLE, DEFAULT_ROLE } from '@users/infrastructure/configurations/constants';
 import { ChatSendRequest } from '../dtos/chat.send.request';
 import { ChatSendResponse } from '../dtos/chat.send.response';
 import { ChatRestMapper } from '../mappers/chat.rest.mapper';
@@ -23,7 +24,7 @@ export class SendChatRequestRestController {
     private readonly sendChatRequestUseCase: SendChatRequestUseCase,
   ) {}
   @Post()
-  @Public()
+  @HasAnyRole(DEFAULT_ROLE, ADMINISTRATOR_ROLE)
   @HttpCode(HttpStatus.CREATED)
   async sendChatRequest(
     @Body() chatSendRequest: ChatSendRequest,

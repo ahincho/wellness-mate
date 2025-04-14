@@ -5,9 +5,9 @@ import { ChatSendResponse } from '../dtos/chat.send.response';
 
 export class ChatRestMapper {
   static sendRequestToDomain(chatSendRequest: ChatSendRequest): ChatRequest {
-    return new ChatRequest({ prompt: chatSendRequest.message });
+    return new ChatRequest({ provider: chatSendRequest.provider, prompt: chatSendRequest.message });
   }
   static domainToResponse(chatResponse: ChatResponse): ChatSendResponse {
-    return new ChatSendResponse({ response: chatResponse.content });
+    return new ChatSendResponse({ provider: chatResponse.provider, response: chatResponse.content });
   }
 }

@@ -1,3 +1,4 @@
+import { ChatProvider } from '@shared/ai/domain/enums/chat.provider';
 import { ChatRequest } from '@shared/ai/domain/models/chat.request';
 import { ChatResponse } from '@shared/ai/domain/models/chat.response';
 import { NovaRequestBody } from './@types/nova.request.body';
@@ -38,6 +39,7 @@ export class AwsBedrockChatMapper {
     const completionTokens = response?.usage?.outputTokens ?? 0;
     const totalTokens = promptTokens + completionTokens;
     return new ChatResponse({
+      provider: ChatProvider.AWS_BEDROCK,
       content,
       model: 'amazon.nova-micro-v1:0',
       promptTokens,
