@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Inject,
   Query,
-  UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -20,7 +20,6 @@ import {
 import { DIAGNOSES } from '@common/constants/api.contants';
 import { PageMapper } from '@common/mappers/page.mapper';
 import { PageResponse } from '@common/dtos/page.response';
-import { ResourceEmptyInterceptor } from '@common/interceptors/resource.empty.interceptor';
 import { HasAnyRole } from '@auth/decorators/has.any.role.decorator';
 import { ADMINISTRATOR_ROLE } from '@users/infrastructure/configurations/constants';
 import { Diagnosis } from '@diagnoses/domain/models/diagnosis';
@@ -28,6 +27,7 @@ import { FindDiagnosesUseCase } from '@diagnoses/application/ports/in/find.diagn
 import { DiagnosisRestMapper } from '../mappers/diagnosis.rest.mapper';
 import { DiagnosisResponse } from '../dtos/diagnosis.response';
 import { DiagnosisQueryRequest } from '../dtos/diagnosis.query.request';
+import { Response } from 'express';
 
 @ApiTags(DIAGNOSES)
 @ApiBearerAuth()
@@ -39,7 +39,6 @@ export class FindDiagnosesRestController {
   ) {}
   @Get()
   @HasAnyRole(ADMINISTRATOR_ROLE)
-  @UseInterceptors(ResourceEmptyInterceptor)
   @ApiOperation({
     summary: 'Get diagnoses',
     description:
@@ -63,15 +62,21 @@ export class FindDiagnosesRestController {
   @ApiQuery({ name: 'size', required: false, type: Number, example: 10 })
   async findDiagnoses(
     @Query() diagnosisQueryRequest: DiagnosisQueryRequest,
-  ): Promise<PageResponse<DiagnosisResponse>> {
+    @Res() response: Response,
+  ): Promise<void> {
     const diagnosisFilters = DiagnosisRestMapper.queryRequestToDomain(
       diagnosisQueryRequest,
     );
     const diagnosisPageResult =
       await this.findDiagnosesUseCase.execute(diagnosisFilters);
-    return PageMapper.transformItems<Diagnosis, DiagnosisResponse>(
-      diagnosisPageResult,
-      DiagnosisRestMapper.domainToResponse,
-    );
+    if (diagnosisPageResult.items.length === 0) {
+      response.status(HttpStatus.NO_CONTENT).send();
+      return;
+    }
+    const responseBody = PageMapper.transformItems<
+      Diagnosis,
+      DiagnosisResponse
+    >(diagnosisPageResult, DiagnosisRestMapper.domainToResponse);
+    response.status(HttpStatus.OK).json(responseBody);
   }
 }

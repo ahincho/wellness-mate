@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Inject,
   Query,
-  UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -17,7 +17,6 @@ import {
   PATIENT_V1_ENDPOINT,
 } from '@common/constants/patients.constants';
 import { PATIENTS } from '@common/constants/api.contants';
-import { ResourceEmptyInterceptor } from '@common/interceptors/resource.empty.interceptor';
 import { PageMapper } from '@common/mappers/page.mapper';
 import { HasAnyRole } from '@auth/decorators/has.any.role.decorator';
 import { ADMINISTRATOR_ROLE } from '@users/infrastructure/configurations/constants';
@@ -26,6 +25,7 @@ import { FindPatientsUseCase } from '@patients/application/ports/in/find.patient
 import { PatientQueryRequest } from '../dtos/patient.query.request';
 import { PatientRestMapper } from '../mappers/patient.rest.mapper';
 import { PatientResponse } from '../dtos/patient.response';
+import { Response } from 'express';
 
 @ApiTags(PATIENTS)
 @ApiBearerAuth()
@@ -37,7 +37,6 @@ export class FindPatientsRestController {
   ) {}
   @Get()
   @HasAnyRole(ADMINISTRATOR_ROLE)
-  @UseInterceptors(ResourceEmptyInterceptor)
   @ApiOperation({
     summary: 'Find patients',
     description: 'Retrieves a list of patients based on the provided filters.',
@@ -49,18 +48,30 @@ export class FindPatientsRestController {
     isArray: true,
   })
   @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'No patients found with the given filters.',
+  })
+  @ApiResponse({
     status: HttpStatus.FORBIDDEN,
     description:
       'Forbidden. Only users with ADMINISTRATOR role can access the patients list.',
   })
-  async findPatients(@Query() patientQueryRequest: PatientQueryRequest) {
+  async findPatients(
+    @Query() patientQueryRequest: PatientQueryRequest,
+    @Res() response: Response,
+  ): Promise<void> {
     const patientFilters =
       PatientRestMapper.queryRequestToDomain(patientQueryRequest);
     const patientPageResult =
       await this.findPatientsUseCase.execute(patientFilters);
-    return PageMapper.transformItems<Patient, PatientResponse>(
+    if (patientPageResult.items.length === 0) {
+      response.status(HttpStatus.NO_CONTENT).send();
+      return;
+    }
+    const responseBody = PageMapper.transformItems<Patient, PatientResponse>(
       patientPageResult,
       PatientRestMapper.domainToResponse,
     );
+    response.status(HttpStatus.OK).json(responseBody);
   }
 }

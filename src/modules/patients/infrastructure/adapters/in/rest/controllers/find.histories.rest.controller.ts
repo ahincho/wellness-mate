@@ -6,7 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Query,
-  UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -21,7 +21,6 @@ import {
 import { PATIENTS } from '@common/constants/api.contants';
 import { PageResponse } from '@common/dtos/page.response';
 import { PageMapper } from '@common/mappers/page.mapper';
-import { ResourceEmptyInterceptor } from '@common/interceptors/resource.empty.interceptor';
 import { HasAnyRole } from '@auth/decorators/has.any.role.decorator';
 import { ADMINISTRATOR_ROLE } from '@users/infrastructure/configurations/constants';
 import { History } from '@patients/domain/models/history';
@@ -29,6 +28,7 @@ import { FindHistoriesUseCase } from '@patients/application/ports/in/find.histor
 import { HistoryResponse } from '../dtos/history.response';
 import { PatientHistoryQueryRequest } from '../dtos/patient.history.query.request';
 import { HistoryRestMapper } from '../mappers/history.rest.mapper';
+import { Response } from 'express';
 
 @ApiTags(PATIENTS)
 @ApiBearerAuth()
@@ -40,7 +40,6 @@ export class FindHistoriesRestController {
   ) {}
   @Get(':patientId/histories')
   @HasAnyRole(ADMINISTRATOR_ROLE)
-  @UseInterceptors(ResourceEmptyInterceptor)
   @ApiOperation({
     summary: "Get the patient's histories",
     description:
@@ -53,6 +52,10 @@ export class FindHistoriesRestController {
     isArray: false,
   })
   @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'No histories found for the given patient.',
+  })
+  @ApiResponse({
     status: HttpStatus.FORBIDDEN,
     description:
       'Forbidden. Only users with ADMINISTRATOR role can access patient histories.',
@@ -60,16 +63,22 @@ export class FindHistoriesRestController {
   async findHistories(
     @Param('patientId', ParseIntPipe) patientId: number,
     @Query() patientHistoryQueryRequest: PatientHistoryQueryRequest,
-  ): Promise<PageResponse<HistoryResponse>> {
+    @Res() response: Response,
+  ): Promise<void> {
     const historyFilters = HistoryRestMapper.queryRequestToDomain(
       patientId,
       patientHistoryQueryRequest,
     );
     const historyPageResult =
       await this.findHistoriesUseCase.execute(historyFilters);
-    return PageMapper.transformItems<History, HistoryResponse>(
+    if (historyPageResult.items.length === 0) {
+      response.status(HttpStatus.NO_CONTENT).send();
+      return;
+    }
+    const responseBody = PageMapper.transformItems<History, HistoryResponse>(
       historyPageResult,
       HistoryRestMapper.domainToResponse,
     );
+    response.status(HttpStatus.OK).json(responseBody);
   }
 }
