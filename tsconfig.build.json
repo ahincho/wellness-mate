@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+  "compilerOptions": {
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@shared/*": ["src/shared/*"],
+      "@patients/*": ["src/modules/patients/*"],
+      "@diagnoses/*": ["src/modules/diagnoses/*"],
+      "@users/*": ["src/modules/users/*"],
+      "@auth/*": ["src/modules/auth/*"],
+    },
+  }
+}
