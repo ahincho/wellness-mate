@@ -1,6 +1,6 @@
 services:
   app:
-    image: wellness-mate:1.0.0
+    image: wellness-mate:0.0.1
     container_name: wellness-mate-app
     ports:
       - "4000:4000"
