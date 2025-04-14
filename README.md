@@ -21,78 +21,124 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# 📖 Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Welcome to the **Wellness Mate API** 🌿. This application is designed to provide personalized health and wellness suggestions to patients based on their medical history 🩺.
 
-## Project setup
+By leveraging cutting-edge **Artificial Intelligence (AI)** technologies 🤖, particularly **Large Language Models (LLMs)** and ChatBots like **OpenAI (GPT)** and **AWS Bedrock (Nova Micro)**, Wellness Mate offers insightful recommendations to help guide patients in managing their health 🧠✨.
+
+All API endpoints are secured with **JWT Bearer Token** authentication 🔐 to ensure that only authorized users can access sensitive data. The API is designed to be simple, scalable, and easy to integrate with your healthcare systems ⚙️📈.
+
+> Built with the [NestJS](https://github.com/nestjs/nest) framework 🚀.
+
+**📌 Version:** 0.0.1  
+**👤 Author:** [Angel Hincho](https://github.com/ahincho) – ahincho@unsa.edu.pe  
+**📄 Terms of Service:** [https://github.com/ahincho/wellness-mate](https://github.com/ahincho/wellness-mate)
+
+## 🛠️ Project Setup
+
+Install the project dependencies by running:
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+## ⚡ Compile and Run the Project
+
+To compile and run the project, use one of the following commands:
 
 ```bash
-# development
+# 🧑‍💻 Development
 $ npm run start
 
-# watch mode
+# 👀 Watch Mode (auto-restarts on file changes)
 $ npm run start:dev
 
-# production mode
+# 🚀 Production Mode
 $ npm run start:prod
 ```
 
-## Run tests
+## 🧪 Run Tests
+
+To run tests for the project, use the following commands:
 
 ```bash
-# unit tests
+# 🧑‍🔬 Unit tests
 $ npm run test
 
-# e2e tests
+# 🌐 End-to-End (e2e) tests
 $ npm run test:e2e
 
-# test coverage
+# 📊 Test coverage
 $ npm run test:cov
 ```
 
-## Deployment
+## 🚀 Deployment & Infrastructure (Docker)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+This section explains how to containerize and spin up the application along with its database using Docker and Docker Compose.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 🐳 Dockerization
+
+The project includes a `Dockerfile` to build a production-ready image of the NestJS app.
+
+#### 🏗️ Build the Image
+
+Run the following command in the root directory:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+docker build -t wellness-mate:0.0.1 .
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### ⚙️ Running the Environment with Docker Compose
 
-## Resources
+To start the API and database locally, run the following command in the project root:
+
+```bash
+docker-compose up -d
+```
+
+### 🧠 AI Integration
+
+This project includes integration with both **OpenAI** and **Amazon Bedrock** to provide intelligent features and suggestions powered by LLMs (Large Language Models).
+
+These integrations are encapsulated in a shared module (`ai`) and are designed to be easily extendable or switchable based on the use case.
+
+> Make sure to configure your credentials and endpoints properly in the environment variables when running in production.
+
+## 📚 Resources
 
 Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- 📖 Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- 💬 For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- 🎥 To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- ☁️ Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- 📊 Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- 🧑‍💻 Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- 📢 To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- 💼 Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## Support
+## 🤖 AI & Cloud Services Documentation
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- 📖 [OpenAI API Documentation](https://platform.openai.com/docs/api-reference/introduction)
+- 📦 [OpenAI npm package](https://www.npmjs.com/package/openai)
+- 📦 [AWS Bedrock Runtime npm package](https://www.npmjs.com/package/@aws-sdk/client-bedrock-runtime)
+- 📦 [AWS Credential Providers npm package](https://www.npmjs.com/package/@aws-sdk/credential-providers)
+- ☁️ [AWS SDK for JavaScript](https://aws.amazon.com/es/sdk-for-javascript/)
+- 🌐 [AWS Bedrock](https://aws.amazon.com/es/bedrock/)
+- 📖 [Models Supported by AWS Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html)
+- 📄 [Nova Micro User Guide](https://docs.aws.amazon.com/pdfs/nova/latest/userguide/nova-ug.pdf)
 
-## Stay in touch
+## 🤝 Support
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Nest is an MIT-licensed open-source project. It can grow thanks to the sponsors and support from the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## License
+## 📞 Stay in touch
+
+- ✍️ Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- 🌐 Website - [https://nestjs.com](https://nestjs.com/)
+- 🐦 Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## 📝 License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
