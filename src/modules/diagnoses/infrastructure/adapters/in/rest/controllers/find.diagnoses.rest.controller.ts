@@ -1,14 +1,23 @@
 import {
   Controller,
   Get,
+  HttpStatus,
   Inject,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
   DIAGNOSIS_V1_ENDPOINT,
   FIND_DIAGNOSES_DEFAULT_SERVICE,
 } from '@common/constants/diagnoses.constants';
+import { DIAGNOSES } from '@common/constants/api.contants';
 import { PageMapper } from '@common/mappers/page.mapper';
 import { PageResponse } from '@common/dtos/page.response';
 import { ResourceEmptyInterceptor } from '@common/interceptors/resource.empty.interceptor';
@@ -20,6 +29,8 @@ import { DiagnosisRestMapper } from '../mappers/diagnosis.rest.mapper';
 import { DiagnosisResponse } from '../dtos/diagnosis.response';
 import { DiagnosisQueryRequest } from '../dtos/diagnosis.query.request';
 
+@ApiTags(DIAGNOSES)
+@ApiBearerAuth()
 @Controller(DIAGNOSIS_V1_ENDPOINT)
 export class FindDiagnosesRestController {
   constructor(
@@ -29,6 +40,27 @@ export class FindDiagnosesRestController {
   @Get()
   @HasAnyRole(ADMINISTRATOR_ROLE)
   @UseInterceptors(ResourceEmptyInterceptor)
+  @ApiOperation({
+    summary: 'Get diagnoses',
+    description:
+      'Retrieves a paginated list of diagnoses. Supports filters and pagination.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of diagnoses returned successfully.',
+    type: PageResponse<DiagnosisResponse>,
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'No diagnoses found with the given filters.',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Forbidden. Only users with ADMINISTRATOR role can access.',
+  })
+  @ApiQuery({ name: 'patientId', required: true, type: String })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'size', required: false, type: Number, example: 10 })
   async findDiagnoses(
     @Query() diagnosisQueryRequest: DiagnosisQueryRequest,
   ): Promise<PageResponse<DiagnosisResponse>> {
