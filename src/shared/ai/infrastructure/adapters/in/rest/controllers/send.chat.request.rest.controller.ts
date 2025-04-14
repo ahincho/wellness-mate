@@ -12,7 +12,10 @@ import {
 } from '@common/constants/ai.constants';
 import { SendChatRequestUseCase } from '@shared/ai/application/ports/in/send.chat.request.use.case';
 import { HasAnyRole } from '@auth/decorators/has.any.role.decorator';
-import { ADMINISTRATOR_ROLE, DEFAULT_ROLE } from '@users/infrastructure/configurations/constants';
+import {
+  ADMINISTRATOR_ROLE,
+  DEFAULT_ROLE,
+} from '@users/infrastructure/configurations/constants';
 import { ChatSendRequest } from '../dtos/chat.send.request';
 import { ChatSendResponse } from '../dtos/chat.send.response';
 import { ChatRestMapper } from '../mappers/chat.rest.mapper';

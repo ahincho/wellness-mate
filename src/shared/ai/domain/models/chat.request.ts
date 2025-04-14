@@ -1,4 +1,4 @@
-import { ChatProvider } from "../enums/chat.provider";
+import { ChatProvider } from '../enums/chat.provider';
 
 export class ChatRequest {
   provider: ChatProvider;
