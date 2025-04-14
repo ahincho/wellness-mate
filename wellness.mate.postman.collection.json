@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "a6d3f2c8-febd-4e3c-a718-f6112f00ede6",
+		"name": "Wellness Mate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28629003"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"example@example.com\",\r\n    \"password\": \"example@production\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{auth}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{auth}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create One User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Angel Eduardo\",\r\n    \"lastname\": \"Hincho Jove\",\r\n    \"email\": \"ahincho@unsa.edu.pe\",\r\n    \"password\": \"ahincho@dev\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{users}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{users}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find One User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{users}}/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{users}}",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chats",
+			"item": [
+				{
+					"name": "Send Chat Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"provider\": \"OpenAI\",\r\n    \"message\": \"Hola, qué tal?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{chats}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{chats}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "Create One Patient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Angel Eduardo\",\r\n  \"lastname\": \"Hincho Jove\",\r\n  \"email\": \"ahincho@unsa.edu.pe\",\r\n  \"birthday\": \"2003-12-02\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{patients}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{patients}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Histories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"histories\": [\r\n    {\r\n      \"description\": \"Paciente refiere dolor de garganta persistente desde hace tres días, sin fiebre. Se recomienda reposo y analgésico.\"\r\n    },\r\n    {\r\n      \"description\": \"Consulta por cefalea tensional luego de jornadas prolongadas frente a la computadora. Se sugiere mejorar postura y pausas activas.\"\r\n    },\r\n    {\r\n      \"description\": \"Dolor abdominal leve, sin náuseas ni vómitos. Dieta blanda recomendada y control en 48 horas.\"\r\n    },\r\n    {\r\n      \"description\": \"Paciente presenta cuadro de resfriado común. Se indica hidratación y paracetamol según necesidad.\"\r\n    },\r\n    {\r\n      \"description\": \"Se realiza control de rutina. Todos los signos vitales dentro de parámetros normales.\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{patients}}/1/histories",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{patients}}",
+								"1",
+								"histories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{patients}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{patients}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find One Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{patients}}/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{patients}}",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Histories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{patients}}/1/histories",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{patients}}",
+								"1",
+								"histories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diagnoses",
+			"item": [
+				{
+					"name": "Create One Diagnosis",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"patientId\": 1,\r\n    \"chatProvider\": \"OpenAI\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{diagnoses}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{diagnoses}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Diagnoses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{diagnoses}}?patientId=1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{diagnoses}}"
+							],
+							"query": [
+								{
+									"key": "patientId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find One Diagnosis",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{diagnoses}}/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{diagnoses}}",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwtToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "localhost:4000",
+			"type": "string"
+		},
+		{
+			"key": "auth",
+			"value": "api/v1/auth",
+			"type": "string"
+		},
+		{
+			"key": "users",
+			"value": "api/v1/users",
+			"type": "string"
+		},
+		{
+			"key": "chats",
+			"value": "api/v1/chats",
+			"type": "string"
+		},
+		{
+			"key": "patients",
+			"value": "api/v1/patients",
+			"type": "string"
+		},
+		{
+			"key": "diagnoses",
+			"value": "api/v1/diagnoses",
+			"type": "string"
+		},
+		{
+			"key": "jwtToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiZXhhbXBsZUBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkN1c3RvbWVyIiwiQWRtaW5pc3RyYXRvciJdLCJpYXQiOjE3NDQ2MDk5NjIsImV4cCI6MTc0NDYxMDI2Mn0.6eYbuJEaX6_Se3gquz9zTjsz2sB7SDR5Xw5VgIqGB3A",
+			"type": "string"
+		}
+	]
+}
