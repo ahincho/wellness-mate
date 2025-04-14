@@ -141,14 +141,19 @@ export class UserPostgresPersistenceAdapter implements UserPersistencePort {
         if (!adminRole) {
           throw new RoleNotFoundException(ADMINISTRATOR_ROLE);
         }
-        const encryptedPassword =
-          await this.passwordEncoder.encode(rawPassword);
+        const defaultRole = await manager.findOne(RoleEntity, {
+          where: { name: DEFAULT_ROLE },
+        });
+        if (!defaultRole) {
+          throw new RoleNotFoundException(DEFAULT_ROLE);
+        }
+        const encryptedPassword = await this.passwordEncoder.encode(rawPassword);
         const newUserEntity = new UserEntity({
           firstname: 'Administrator',
           lastname: 'Administrator',
           email,
           password: encryptedPassword,
-          roles: [adminRole],
+          roles: [adminRole, defaultRole],
         });
         await manager.save(UserEntity, newUserEntity);
       });
