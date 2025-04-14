@@ -105,6 +105,29 @@ These integrations are encapsulated in a shared module (`ai`) and are designed t
 
 > Make sure to configure your credentials and endpoints properly in the environment variables when running in production.
 
+## 📫 Postman Collection
+
+To help you quickly explore and test the available API endpoints, this repository includes a **Postman collection** named:
+
+```bash
+wellness.mate.postman.collection.json
+```
+
+This collection contains:
+
+- All available API endpoints
+- Sample requests and responses
+- Authentication setup with JWT Bearer Token
+- Some example test cases for key flows
+
+You can import this collection into Postman by:
+
+1. Opening Postman.
+2. Clicking **Import**.
+3. Selecting the file `wellness.mate.postman.collection.json` from the project root.
+
+> 🧪 This is especially useful during development or QA to quickly validate that the API is working as expected.
+
 ## 📚 Resources
 
 Check out a few resources that may come in handy when working with NestJS:
