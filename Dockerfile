@@ -1,26 +1,25 @@
-# Job 1: Build
+# Stage 1: Build
 FROM node:22.14.0-alpine AS build
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
-# Copy only package.json and package-lock.json first to leverage Docker cache
+# Copy package files and install dependencies (including devDependencies)
 COPY package*.json ./
-# Install dependencies (including dev dependencies)
 RUN npm install
-# Copy the application code after installing dependencies
+# Copy source code
 COPY . .
-# Build the application
+# Build the application (requires NestJS CLI and TypeScript from devDependencies)
 RUN npm run build
-# Job 2: Production
+# Remove devDependencies to reduce size of node_modules
+RUN npm prune --omit=dev
+# Stage 2: Production
 FROM node:22.14.0-alpine AS production
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
-# Copy the built application and node_modules from the build stage
-COPY --from=build /app/dist ./dist
+# Copy only required production files
+COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./node_modules
-# Copy only production dependencies (no dev dependencies)
-COPY package*.json ./
-RUN npm install --only=production
+COPY --from=build /app/dist ./dist
 # Expose the application port
 EXPOSE 3000
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# Run the application
+CMD ["node", "dist/main"]
