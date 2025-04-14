@@ -17,6 +17,7 @@ import { Diagnosis } from '@diagnoses/domain/models/diagnosis';
 import { HistoriesNotFoundException } from '@diagnoses/domain/exceptions/histories.not.found.exception';
 import { CreateOneDiagnosisUseCase } from '../ports/in/create.one.diagnosis.use.case';
 import { DiagnosisPersistencePort } from '../ports/out/diagnosis.peristence.port';
+import { ChatProvider } from '@shared/ai/domain/enums/chat.provider';
 
 @Injectable()
 export class CreateOneDiagnosisDefaultService
@@ -32,7 +33,11 @@ export class CreateOneDiagnosisDefaultService
     @Inject(DIAGNOSIS_POSTGRES_REPOSITORY)
     private readonly diagnosisPersistencePort: DiagnosisPersistencePort,
   ) {}
-  async execute(patientId: number, page: Page): Promise<Diagnosis> {
+  async execute(
+    patientId: number,
+    page: Page,
+    chatProvider: ChatProvider,
+  ): Promise<Diagnosis> {
     const histories = await this.findHistoriesUseCase.execute(
       new HistoryFilters({ page: page, patientId }),
     );
@@ -50,6 +55,7 @@ export class CreateOneDiagnosisDefaultService
     }
     const chatResponse = await this.sendChatRequestUseCase.execute(
       new ChatRequest({
+        provider: chatProvider,
         profile:
           'Eres un médico general experto, el usuario te brindará algunas historias médicas recientes y sobre ello debes darle consejos de cómo cuidar su salud y prevenir nuevamente sus patologías pasadas',
         prompt: `Hola, estas son mis historias médicas más recientes: ${histories.items.map((h) => h.description).join(', ')}`,
@@ -61,7 +67,7 @@ export class CreateOneDiagnosisDefaultService
         module: ModuleEnum.DIAGNOSIS,
         layer: Layer.APPLICATION,
         level: Level.INFO,
-        message: `Chat request sent to the AI model (${chatResponse.model}) for patient with id '${patientId}', using ${chatResponse.totalTokens} tokens to generate recommendations based on ${histories.items.length} recent medical histories`,
+        message: `[${chatResponse.provider}-${chatResponse.model}] Analysis for patient with id '${patientId}', using ${chatResponse.totalTokens} tokens to generate recommendations based on ${histories.items.length} recent medical histories`,
       }),
     );
     const diagnosis = await this.diagnosisPersistencePort.createOneDiagnosis(

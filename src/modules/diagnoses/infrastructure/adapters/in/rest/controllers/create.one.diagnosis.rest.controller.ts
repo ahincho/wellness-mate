@@ -30,7 +30,7 @@ export class CreateOneDiagnosisRestController {
   async createOneDiagnosis(
     @Body() diagnosisCreateRequest: DiagnosisCreateRequest,
   ): Promise<DiagnosisResponse> {
-    const { patientId } = diagnosisCreateRequest;
+    const { patientId, chatProvider } = diagnosisCreateRequest;
     const page = new Page({
       number: diagnosisCreateRequest.page,
       size: diagnosisCreateRequest.size,
@@ -38,6 +38,7 @@ export class CreateOneDiagnosisRestController {
     const savedDiagnosis = await this.createOneDiagnosisUseCase.execute(
       patientId,
       page,
+      chatProvider,
     );
     return DiagnosisRestMapper.domainToResponse(savedDiagnosis);
   }
